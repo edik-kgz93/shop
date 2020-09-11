@@ -16,8 +16,17 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'collectionController@collectionAction');
 
 Route::get('/product/{id}','productController@productAction');
+
 Route::post('/cart','cartController@adtocartAction');
 Route::get('/cart','cartController@adtocartAction');
 Route::post('/cart/minusform','cartController@minusformAction');
 Route::post('/cart/plusform','cartController@plusformAction');
 Route::post('/cart/delete','cartController@deleteformAction');
+
+Route::get('/cartajax','cartController@cartajaxAction');
+Route::post('/cartajax/minus','cartController@updateMinusajaxAction');
+Route::get('/cartajax/minus','cartController@updateMinusajaxAction');
+Route::post('/cartajax/plus','cartController@updatePlusajaxAction');
+Route::get('/cartajax/plus','cartController@updatePlusajaxAction');
+Route::post('/cartajax/deleteajax','cartController@deleteajaxAction');
+Route::get('/cartajax/deleteajax','cartController@deleteajaxAction');

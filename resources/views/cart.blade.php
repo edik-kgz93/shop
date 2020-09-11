@@ -12,53 +12,55 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body class="ml-3">
-<h3 class="mb-3">NOTEBOOK</h3>
-<h4>Cart</h4>
-<table style="width:100%">
-    <tr>
-        <th>Name</th>
-        <th>Quantity</th>
-        <th>Price</th>
-        <th></th>
-        <th>Sum</th>
-    </tr>
-    @foreach($cart_products as $product)
+    <h3 class="mb-3">NOTEBOOK</h3>
+    <h4>Cart</h4>
+    <a href="/">Collection</a>
+    <table style="width:100%">
         <tr>
-            <td><?php echo($product->name); ?></td>
-            <td>
-                <div class="row" class="d-1px">
-                    <form action="/cart/minusform" method="post">
-                        {{ csrf_field() }}
-                        <input type="hidden" name="form_quantity" value="<?php echo($product->quantity); ?>">
-                        <input type="hidden" name="cart_minus_form_id" value="<?php echo($product->id); ?>">
-                        <input type="submit" value="-">
-                    </form>
-                <div id="cart_quantity<?php echo($product->id); ?>"><?php echo($product->quantity); ?></div>
-                    <form action="/cart/plusform" method="post">
-                        {{ csrf_field() }}
-                        <input type="hidden" name="cart_form_quantity" value="<?php echo($product->quantity); ?>">
-                        <input type="hidden" name="cart_plus_form_id" value="<?php echo($product->id); ?>">
-                        <input type="submit" value="+">
-                    </form>
-                </div>
-            </td>
-            <td><?php echo($product->price); ?></td>
-            <td>
-                <form action="/cart/delete" method="post">
-                    {{ csrf_field() }}
-                    <input type="hidden" name="cart_delete_form_id" value="<?php echo($product->id); ?>">
-                    <input type="submit" value="Remove from cart">
-                </form>
-            </td>
-            <td id="sum<?php echo($product->id); ?>"><?php echo($product->quantity*$product->price); ?></td>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th></th>
+            <th>Sum</th>
         </tr>
-    @endforeach
-    <tr>
-        <th>Allsum</th>
-        <td></td>
-        <td></td>
-        <th><?php echo($allsum); ?></th>
-    </tr>
-</table>
+        @foreach($cart_products as $product)
+            <tr>
+                <td><?php echo($product->name); ?></td>
+                <td>
+                    <div class="row" class="d-1px">
+                        <form action="/cart/minusform" method="post">
+                            {{ csrf_field() }}
+                            <input type="hidden" name="form_quantity" value="<?php echo($product->quantity); ?>">
+                            <input type="hidden" name="cart_minus_form_id" value="<?php echo($product->id); ?>">
+                            <input type="submit" value="-">
+                        </form>
+                    <div id="cart_quantity<?php echo($product->id); ?>"><?php echo($product->quantity); ?></div>
+                        <form action="/cart/plusform" method="post">
+                            {{ csrf_field() }}
+                            <input type="hidden" name="cart_form_quantity" value="<?php echo($product->quantity); ?>">
+                            <input type="hidden" name="cart_plus_form_id" value="<?php echo($product->id); ?>">
+                            <input type="submit" value="+">
+                        </form>
+                    </div>
+                </td>
+                <td><?php echo($product->price); ?></td>
+                <td>
+                    <form action="/cart/delete" method="post">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="cart_delete_form_id" value="<?php echo($product->id); ?>">
+                        <input type="submit" value="Remove from cart">
+                    </form>
+                </td>
+                <td id="sum<?php echo($product->id); ?>"><?php echo($product->quantity*$product->price); ?></td>
+            </tr>
+        @endforeach
+        <tr>
+            <th>Allsum</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <th><?php echo($allsum); ?></th>
+        </tr>
+    </table>
 </body>
 </html>

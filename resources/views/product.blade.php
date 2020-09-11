@@ -27,5 +27,7 @@
         <input type="submit" value="Добавить в корзину (PHP)">
     </form>
     <a href="/cart">Cart</a>
+    <br>
+    <a href="/cartajax">CartAjax</a>
 </body>
 </html>

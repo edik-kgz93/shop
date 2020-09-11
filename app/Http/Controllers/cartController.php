@@ -60,4 +60,51 @@ class cartController extends Controller
         }
         return redirect('/cart');
     }
+
+    public function cartajaxAction(){
+        $cart_products=DB::select('SELECT collection.name, collection.price, collection.id, cart.quantity FROM cart LEFT JOIN collection ON collection.id = cart.product_id;');
+        $collection=DB::select('SELECT  collection.price, cart.quantity FROM cart
+                                LEFT JOIN collection  ON cart.product_id=collection.id');
+        $allsum=0;
+        foreach ($collection as $product){
+            $price=$product->price * $product->quantity;
+            $allsum=$allsum+$price;
+        }
+        return view('/cartajax',['cart_products'=>$cart_products, 'allsum'=>$allsum]);
+    }
+
+    public function updateMinusajaxAction(Request $request){
+        $id=$request->input('product_id');
+        $price=$request->input('product_price');
+        $quantity=$request->input('product_quantity')-1;
+        if($request->input('product_quantity')>1){
+            DB::select('UPDATE cart SET quantity=:quantity WHERE product_id=:id',['quantity'=>$quantity, 'id'=>$id]);
+        }
+        $newquantity=DB::select('SELECT quantity FROM cart WHERE product_id=:id',['id'=>$id]);
+        $sum=$newquantity[0]->quantity*$price;
+        $collection=DB::select('SELECT  collection.price, cart.quantity FROM cart
+                                LEFT JOIN collection  ON cart.product_id=collection.id');
+        $allsum=0;
+        foreach ($collection as $product){
+            $price=$product->price * $product->quantity;
+            $allsum=$allsum+$price;
+        }
+        return Response()->json(['newquantity'=>$newquantity, 'sum'=>$sum, 'allsum'=>$allsum]);
+    }
+
+    public function updatePlusajaxAction(Request $request){
+        $id=$request->input('product_id');
+        $price=$request->input('product_price');
+        $quantity=$request->input('product_quantity')+1;
+        DB::select('UPDATE cart SET quantity=:quantity WHERE product_id=:id',['quantity'=>$quantity, 'id'=>$id]);
+        $newquantity=DB::select('SELECT quantity FROM cart WHERE product_id=:id',['id'=>$id]);
+        $sum=$newquantity[0]->quantity*$price;
+        return Response()->json(['newquantity'=>$newquantity, 'sum'=>$sum]);
+    }
+
+    public function deleteajaxAction(Request $request){
+        $id=$request->input('product_id');
+        DB::select('DELETE FROM cart WHERE product_id=:id', ['id'=>$id]);
+        return Response()->json(['id'=>$id]);
+    }
 }
